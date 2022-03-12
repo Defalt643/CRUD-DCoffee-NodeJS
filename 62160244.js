@@ -149,6 +149,7 @@ server.get('/search', function (req, res) {
     if(index==""){
         res.redirect('/main');
     }if(typeof index ==='string'){
+        console.log("Type of String Searching from name..."+"'"+index+"'");
         con.query('SELECT * FROM mst_employee WHERE name='+index, (err, rows) => {
             if (err) return err;
             if(Object.values(JSON.parse(JSON.stringify(rows))).length>0){
@@ -159,7 +160,8 @@ server.get('/search', function (req, res) {
                     surname: user.data.surname,
                     position: user.data.position
                 });
-            }con.query('SELECT * FROM mst_employee WHERE surname='+index, (err, rows) => {
+            } console.log("Type of String Searching from surname..."+"'"+index+"'");
+            con.query('SELECT * FROM mst_employee WHERE surname='+index, (err, rows) => {
                 if (err) return err;
                 if(Object.values(JSON.parse(JSON.stringify(rows))).length>0){
                     console.log(rows)
@@ -170,7 +172,7 @@ server.get('/search', function (req, res) {
                         position: user.data.position
                     });
                 }
-            });
+            }); console.log("Type of String Searching from position..."+"'"+index+"'");
             con.query('SELECT * FROM mst_employee WHERE position='+index, (err, rows) => {
                 if (err) return err;
                 if(Object.values(JSON.parse(JSON.stringify(rows))).length>0){
@@ -186,6 +188,7 @@ server.get('/search', function (req, res) {
 
         })
     }if(typeof index ==="number"){
+        console.log("Type of number Searching from id_employee..."+"'"+index+"'");
         con.query('SELECT * FROM mst_employee WHERE id_employee='+index, (err, rows) => {
             if (err) return err;
             if(Object.values(JSON.parse(JSON.stringify(rows))).length>0){
@@ -196,7 +199,8 @@ server.get('/search', function (req, res) {
                     surname: user.data.surname,
                     position: user.data.position
                 });
-            }con.query('SELECT * FROM mst_employee WHERE salary='+index, (err, rows) => {
+            }console.log("Type of number Searching from salary..."+"'"+index+"'");
+            con.query('SELECT * FROM mst_employee WHERE salary='+index, (err, rows) => {
                 if (err) return err;
                 if(Object.values(JSON.parse(JSON.stringify(rows))).length>0){
                     res.render(__dirname + "/public/dashboard.html", {
@@ -207,16 +211,15 @@ server.get('/search', function (req, res) {
                     });
                 }
             });
+            console.log("Type of number Searching from total_sale..."+"'"+index+"'");
             con.query('SELECT * FROM mst_employee WHERE total_sale='+index, (err, rows) => {
                 if (err) return err;
-                
-                    res.render(__dirname + "/public/dashboard.html", {
-                        data: rows,
-                        name: user.data.name,
-                        surname: user.data.surname,
-                        position: user.data.position
-                    });
-                
+                res.render(__dirname + "/public/dashboard.html", {
+                    data: rows,
+                    name: user.data.name,
+                    surname: user.data.surname,
+                    position: user.data.position
+                 });
             });
         });
     }
