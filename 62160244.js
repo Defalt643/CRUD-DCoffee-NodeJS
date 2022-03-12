@@ -67,11 +67,14 @@ server.post('/login', function (req, res) {
             user = {
                 data: data2[0]
             }
+            con.query('INSERT INTO trn_login (id_employee, datetime_login) VALUES (?, NOW())', [data[0].id_employee], function (err) {
+                if (err) return err;
+            })
             res.redirect('/main')
         })
     })
 });
-
+var status = false;
 server.get('/main', function (req, res) {
     const id = user.data.id_employee
     var lastid;
@@ -83,17 +86,30 @@ server.get('/main', function (req, res) {
     // con.query('SELECT * FROM mst_employee',function(err,dataList){
     //     console.log(dataList)
     // });
-    con.query('INSERT INTO trn_login (id_employee, datetime_login) VALUES (?, NOW())', id, function (err) {
-        if (err) return err;
-    })
+    // con.query('INSERT INTO trn_login (id_employee, datetime_login) VALUES (?, NOW())', id, function (err) {
+    //     if (err) return err;
+    // })
     con.query('SELECT * FROM `mst_employee`', (err, rows) => {
         if (err) return err;
-        res.render(__dirname + "/public/dashboard.html", {
-            data: rows,
-            name: user.data.name,
-            surname: user.data.surname,
-            position: user.data.position
-        })
+        if (status) {
+            res.render(__dirname + "/public/dashboard.html", {
+                data: rows,
+                name: user.data.name,
+                surname: user.data.surname,
+                position: user.data.position,
+                isCRUD: "true"
+            })
+        } else {
+            res.render(__dirname + "/public/dashboard.html", {
+                data: rows,
+                name: user.data.name,
+                surname: user.data.surname,
+                position: user.data.position,
+                isCRUD: "false"
+
+            })
+        }
+
         console.log('ID Login' + user.data.id_employee + ' ' + user.data.name + ' ' + user.data.surname + ' ' + user.data.position)
         console.log('-------------------------')
         console.log(rows)
@@ -106,6 +122,7 @@ server.get('/main', function (req, res) {
     // })
 })
 server.get('/delete/:userId', (req, res) => {
+    status="true";
     const userId = req.params.userId;
     console.log('userId = ' + userId);
     con.query("DELETE FROM `mst_employee` WHERE id_employee=" + userId, (err, result) => {
@@ -115,6 +132,7 @@ server.get('/delete/:userId', (req, res) => {
 });
 server.post('/insert', function (req, res) {
     console.log("INSERT");
+    status="true";
     var name = req.body.inputName;
     var surname = req.body.inputSurname;
     var position = req.body.inputPosition;
@@ -129,6 +147,7 @@ server.post('/insert', function (req, res) {
 });
 server.post('/update/:userId', function (req, res) {
     console.log("UPDATE");
+    status="true";
     const userId = req.params.userId
     var name = req.body.updateName;
     var surname = req.body.updateSurname;
@@ -144,13 +163,14 @@ server.post('/update/:userId', function (req, res) {
 });
 server.post('/search', function (req, res) {
     console.log("SEARCH");
+    status=true;
     var index = req.body.searchBox;
     if (index == "") {
         res.redirect('/main');
-    }if (index === []) {
+    } if (index === []) {
         res.redirect('/main');
     }
-    if (isNaN(index)==false) {
+    if (isNaN(index) == false) {
         console.log("Index are type of number")
         console.log("Type of number Searching from id_employee..." + "'" + index + "'");
         con.query('SELECT * FROM mst_employee WHERE id_employee=' + index, (err, rows) => {
@@ -163,7 +183,7 @@ server.post('/search', function (req, res) {
                     name: user.data.name,
                     surname: user.data.surname,
                     position: user.data.position,
-                    isCRUD:true
+                    isCRUD: true
                 });
             } console.log("Type of number Searching from salary..." + "'" + index + "'");
             con.query('SELECT * FROM mst_employee WHERE salary=' + index, (err, rows) => {
@@ -175,7 +195,7 @@ server.post('/search', function (req, res) {
                         name: user.data.name,
                         surname: user.data.surname,
                         position: user.data.position,
-                        isCRUD:true
+                        isCRUD: true
                     });
                 }
             });
@@ -189,7 +209,7 @@ server.post('/search', function (req, res) {
                         name: user.data.name,
                         surname: user.data.surname,
                         position: user.data.position,
-                        isCRUD:true
+                        isCRUD: true
                     });
                 } else {
                     console.log("Search found from total_sale index" + rows[0].id_employee)
@@ -198,7 +218,7 @@ server.post('/search', function (req, res) {
                         name: user.data.name,
                         surname: user.data.surname,
                         position: user.data.position,
-                        isCRUD:true
+                        isCRUD: true
                     });
                 }
             });
@@ -206,7 +226,7 @@ server.post('/search', function (req, res) {
     } else {
         console.log("Index aren't type of number")
         console.log("Type of String Searching from name..." + "'" + index + "'");
-        con.query("SELECT * FROM mst_employee WHERE name='" + index+"'", (err, rows) => {
+        con.query("SELECT * FROM mst_employee WHERE name='" + index + "'", (err, rows) => {
             if (err) return err;
             if (Object.values(JSON.parse(JSON.stringify(rows))).length > 0) {
                 console.log("Search found from name index" + rows[0].id_employee)
@@ -216,10 +236,10 @@ server.post('/search', function (req, res) {
                     name: user.data.name,
                     surname: user.data.surname,
                     position: user.data.position,
-                    isCRUD:true
+                    isCRUD: true
                 });
             } console.log("Type of String Searching from surname..." + "'" + index + "'");
-            con.query("SELECT * FROM mst_employee WHERE surname='" + index+"'", (err, rows) => {
+            con.query("SELECT * FROM mst_employee WHERE surname='" + index + "'", (err, rows) => {
                 if (err) return err;
                 if (Object.values(JSON.parse(JSON.stringify(rows))).length > 0) {
                     console.log("Search found from surname index" + rows[0].id_employee)
@@ -229,11 +249,11 @@ server.post('/search', function (req, res) {
                         name: user.data.name,
                         surname: user.data.surname,
                         position: user.data.position,
-                        isCRUD:true
+                        isCRUD: true
                     });
                 }
             }); console.log("Type of String Searching from position..." + "'" + index + "'");
-            con.query("SELECT * FROM mst_employee WHERE position='" + index+"'", (err, rows) => {
+            con.query("SELECT * FROM mst_employee WHERE position='" + index + "'", (err, rows) => {
                 if (err) return err;
                 console.log(rows)
                 if (Object.values(JSON.parse(JSON.stringify(rows))).length == 0) {
@@ -243,15 +263,15 @@ server.post('/search', function (req, res) {
                         name: user.data.name,
                         surname: user.data.surname,
                         position: user.data.position,
-                        isCRUD:true
+                        isCRUD: true
                     });
-                }console.log("Search found from position index" + rows[0].id_employee)
+                } console.log("Search found from position index" + rows[0].id_employee)
                 res.render(__dirname + "/public/dashboard.html", {
                     data: rows,
                     name: user.data.name,
                     surname: user.data.surname,
                     position: user.data.position,
-                    isCRUD:true
+                    isCRUD: true
                 });
             });
         })

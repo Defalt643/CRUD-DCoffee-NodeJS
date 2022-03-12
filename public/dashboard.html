@@ -296,9 +296,20 @@
     </style>
     <script>
         var position = "<%= position %>"
+        var isCRUD = "<%= isCRUD %>"
         function checkRole() {
+            var dataT = document.getElementById("dataTable");
+            if(isCRUD=="true"){
+                dataT.style.display="block";
+            }else{
+                dataT.style.display="none";
+            }
             var btn = document.getElementById("manageData");
             if (position == 'พนักงาน') btn.style.display = "none";
+        }
+        function showTable(){
+            var dataT = document.getElementById("dataTable");
+            dataT.style.display="block";
         }
         function openForm() {
             document.getElementById("myForm").style.display = "block";
@@ -350,7 +361,7 @@
         </table>
     </div>
     <div class="sidenav">
-        <a href="#" id="manageData">จัดการข้อมูลผู้ใช้</a>
+        <a href="#" onclick="showTable()" id="manageData">จัดการข้อมูลผู้ใช้</a>
         <a href="/logout">ออกจากระบบ</a>
     </div>
     <div class="w3-display-position">
