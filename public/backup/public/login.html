@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<style>
+    h2 {
+        text-align: center;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    /* Style the header */
+    .header {
+        background-color: #f1f1f1;
+        padding: 20px;
+        text-align: center;
+    }
+
+    /* Style the top navigation bar */
+    .topnav {
+        overflow: hidden;
+        background-color: #333;
+    }
+
+    /* Style the topnav links */
+    .topnav a {
+        float: left;
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    /* Change color on hover */
+    .topnav a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    /* Create three equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 33.33%;
+        padding: 15px;
+        border: 2px solid black;
+
+    }
+
+    .column1 {
+        float: left;
+        width: 33.33%;
+        padding: 15px;
+
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+    @media screen and (max-width:600px) {
+        .column {
+            width: 100%;
+        }
+    }
+</style>
+<body>
+    <div class="row">
+        <h1></h1>
+    </div>
+    <div class="row">
+        <div class="column1">
+        </div>
+        <div class="column">
+            <h2 style="color: greenyellow;">LOGIN FORM</h2>
+            <form action="/login" method="POST">
+                <div class="form-group row">
+                    <label for="email" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10 pb-3">
+                        <input type="email" class="form-control" placeholder="Email" name="email" id="em"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="password" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" placeholder="Password" name="password" id="pass"/>
+                        <br />
+                        <input class="btn btn-success submit" type="submit" value="SUBMIT" />
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="column1">
+        </div>
+    </div>
+</body>
+
+</html>
