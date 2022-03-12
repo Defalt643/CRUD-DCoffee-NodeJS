@@ -147,58 +147,11 @@ server.post('/search', function (req, res) {
     var index = req.body.searchBox;
     if (index == "") {
         res.redirect('/main');
+    }if (index === []) {
+        res.redirect('/main');
     }
-    var type = Number(index)
-    console.log(type);
-    if (typeof type == "number") {
+    if (isNaN(index)==false) {
         console.log("Index are type of number")
-    } else {
-        console.log("Index aren't type of number")
-    }
-    console.log(index + " are " + typeof index)
-    if (typeof index === 'string') {
-        console.log("Type of String Searching from name..." + "'" + index + "'");
-        con.query('SELECT * FROM mst_employee WHERE name=' + index, (err, rows) => {
-            if (err) return err;
-            if (Object.values(JSON.parse(JSON.stringify(rows))).length > 0) {
-                console.log("Search found from name index" + rows[0].id_employee)
-                console.log(rows)
-                res.render(__dirname + "/public/dashboard.html", {
-                    data: rows,
-                    name: user.data.name,
-                    surname: user.data.surname,
-                    position: user.data.position
-                });
-            } console.log("Type of String Searching from surname..." + "'" + index + "'");
-            con.query('SELECT * FROM mst_employee WHERE surname=' + index, (err, rows) => {
-                if (err) return err;
-                if (Object.values(JSON.parse(JSON.stringify(rows))).length > 0) {
-                    console.log("Search found from surname index" + rows[0].id_employee)
-                    console.log(rows)
-                    res.render(__dirname + "/public/dashboard.html", {
-                        data: rows,
-                        name: user.data.name,
-                        surname: user.data.surname,
-                        position: user.data.position
-                    });
-                }
-            }); console.log("Type of String Searching from position..." + "'" + index + "'");
-            con.query('SELECT * FROM mst_employee WHERE position=' + index, (err, rows) => {
-                if (err) return err;
-                if (Object.values(JSON.parse(JSON.stringify(rows))).length > 0) {
-                    console.log("Search found from position index" + rows[0].id_employee)
-                    console.log(rows)
-                    res.render(__dirname + "/public/dashboard.html", {
-                        data: rows,
-                        name: user.data.name,
-                        surname: user.data.surname,
-                        position: user.data.position
-                    });
-                }
-            });
-
-        })
-    } if (typeof index === "number") {
         console.log("Type of number Searching from id_employee..." + "'" + index + "'");
         con.query('SELECT * FROM mst_employee WHERE id_employee=' + index, (err, rows) => {
             if (err) return err;
@@ -209,7 +162,8 @@ server.post('/search', function (req, res) {
                     data: rows,
                     name: user.data.name,
                     surname: user.data.surname,
-                    position: user.data.position
+                    position: user.data.position,
+                    isCRUD:true
                 });
             } console.log("Type of number Searching from salary..." + "'" + index + "'");
             con.query('SELECT * FROM mst_employee WHERE salary=' + index, (err, rows) => {
@@ -220,25 +174,87 @@ server.post('/search', function (req, res) {
                         data: rows,
                         name: user.data.name,
                         surname: user.data.surname,
-                        position: user.data.position
+                        position: user.data.position,
+                        isCRUD:true
                     });
                 }
             });
             console.log("Type of number Searching from total_sale..." + "'" + index + "'");
             con.query('SELECT * FROM mst_employee WHERE total_sale=' + index, (err, rows) => {
                 if (err) return err;
-                if (Object.values(JSON.parse(JSON.stringify(rows))).length > 0) {
+                if (Object.values(JSON.parse(JSON.stringify(rows))).length == 0) {
+                    console.log("Search not found!!");
+                    res.render(__dirname + "/public/dashboard.html", {
+                        data: rows,
+                        name: user.data.name,
+                        surname: user.data.surname,
+                        position: user.data.position,
+                        isCRUD:true
+                    });
+                } else {
                     console.log("Search found from total_sale index" + rows[0].id_employee)
                     res.render(__dirname + "/public/dashboard.html", {
                         data: rows,
                         name: user.data.name,
                         surname: user.data.surname,
-                        position: user.data.position
+                        position: user.data.position,
+                        isCRUD:true
                     });
                 }
-
             });
         });
+    } else {
+        console.log("Index aren't type of number")
+        console.log("Type of String Searching from name..." + "'" + index + "'");
+        con.query("SELECT * FROM mst_employee WHERE name='" + index+"'", (err, rows) => {
+            if (err) return err;
+            if (Object.values(JSON.parse(JSON.stringify(rows))).length > 0) {
+                console.log("Search found from name index" + rows[0].id_employee)
+                console.log(rows)
+                res.render(__dirname + "/public/dashboard.html", {
+                    data: rows,
+                    name: user.data.name,
+                    surname: user.data.surname,
+                    position: user.data.position,
+                    isCRUD:true
+                });
+            } console.log("Type of String Searching from surname..." + "'" + index + "'");
+            con.query("SELECT * FROM mst_employee WHERE surname='" + index+"'", (err, rows) => {
+                if (err) return err;
+                if (Object.values(JSON.parse(JSON.stringify(rows))).length > 0) {
+                    console.log("Search found from surname index" + rows[0].id_employee)
+                    console.log(rows)
+                    res.render(__dirname + "/public/dashboard.html", {
+                        data: rows,
+                        name: user.data.name,
+                        surname: user.data.surname,
+                        position: user.data.position,
+                        isCRUD:true
+                    });
+                }
+            }); console.log("Type of String Searching from position..." + "'" + index + "'");
+            con.query("SELECT * FROM mst_employee WHERE position='" + index+"'", (err, rows) => {
+                if (err) return err;
+                console.log(rows)
+                if (Object.values(JSON.parse(JSON.stringify(rows))).length == 0) {
+                    console.log("Search not found!!");
+                    res.render(__dirname + "/public/dashboard.html", {
+                        data: rows,
+                        name: user.data.name,
+                        surname: user.data.surname,
+                        position: user.data.position,
+                        isCRUD:true
+                    });
+                }console.log("Search found from position index" + rows[0].id_employee)
+                res.render(__dirname + "/public/dashboard.html", {
+                    data: rows,
+                    name: user.data.name,
+                    surname: user.data.surname,
+                    position: user.data.position,
+                    isCRUD:true
+                });
+            });
+        })
     }
 });
 
