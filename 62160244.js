@@ -125,25 +125,57 @@ server.get('/delete/:userId', (req, res) => {
     status="true";
     const userId = req.params.userId;
     console.log('userId = ' + userId);
-    con.query("DELETE FROM `mst_employee` WHERE id_employee=" + userId, (err, result) => {
-        if (err) throw err;
+    con.query("SELECT * FROM `mst_security WHERE id_employee=`"+userId,(err ,rows) =>{
+        console.log(rows);
         res.redirect('/main');
     });
+    // con.query("DELETE FROM `mst_employee` WHERE id_employee=" + userId, (err, result) => {
+    //     if (err) throw err;
+    //     res.redirect('/main');
+    // });
 });
-server.post('/insert', function (req, res) {
+// function wait(err,time) {
+//     setTimeout(function() {
+//         err.fadeOut()
+//     }, time);
+//   }
+server.post('/insert',async function (req, res) {
     console.log("INSERT");
     status="true";
+    //var for mst_employee
     var name = req.body.inputName;
     var surname = req.body.inputSurname;
     var position = req.body.inputPosition;
     var salary = req.body.inputSalary;
     var totalSale = req.body.inputTotalSale;
     console.log(name + " " + surname + " " + position + " " + salary + " " + totalSale)
+    //var for mst_sucurity
+    var user = req.body.inputUser;
+    var password = req.body.inputPassword;
+    console.log("email:"+user);
+    console.log("password:"+password);
     var emp = { name, surname, position, salary, totalSale }
     con.query("INSERT INTO mst_employee (`id_employee`, `name`, `surname`, `position`, `salary`, `total_sale`) VALUES (?,?,?,?,?,?)", [NULL, name, surname, position, salary, totalSale], function (err) {
         if (err) return err;
-        res.redirect('/main');
-    })
+    });
+    var data;
+    var fkId;
+    con.query('SELECT * FROM `mst_employee`',async (err, rows) => {
+        if (err) {
+            console.log("ERROR SELECT");
+            return err;
+        }
+        data =JSON.parse(JSON.stringify(rows));
+        fkId=data[data.length-1].id_employee
+        console.log(data[data.length-1]);
+        console.log(fkId)
+        // wait(err,1000);
+        con.query("INSERT INTO `mst_security` (`id_security`,`user`,`password`,`id_employee`) VALUES(?,?,?,?)",[NULL,user,password,fkId],function(err){
+            if (err) return err;
+        });
+    });
+    res.setHeader("Content-Type", "text/html");
+    res.redirect('/main');
 });
 server.post('/update/:userId', function (req, res) {
     console.log("UPDATE");
@@ -164,12 +196,14 @@ server.post('/update/:userId', function (req, res) {
 server.post('/search', function (req, res) {
     console.log("SEARCH");
     status=true;
-    var index = req.body.searchBox;
+    var index = "";
+    index = req.body.searchBox;
     if (index == "") {
         res.redirect('/main');
     } if (index === []) {
         res.redirect('/main');
-    }
+    }console.log(typeof index);
+    console.log("Index are "+index);
     if (isNaN(index) == false) {
         console.log("Index are type of number")
         console.log("Type of number Searching from id_employee..." + "'" + index + "'");
@@ -265,7 +299,9 @@ server.post('/search', function (req, res) {
                         position: user.data.position,
                         isCRUD: true
                     });
-                } console.log("Search found from position index" + rows[0].id_employee)
+                } if(Object.values(JSON.parse(JSON.stringify(rows))).length>0){
+                    console.log("Search found from position index" + rows[0].id_employee)
+                }
                 res.render(__dirname + "/public/dashboard.html", {
                     data: rows,
                     name: user.data.name,

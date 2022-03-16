@@ -22,6 +22,7 @@
 
         body {
             margin: 0;
+            height: 100%;
         }
 
         /* Style the header */
@@ -91,7 +92,7 @@
             bottom: 0;
             width: 100%;
             height: 60px;
-            z-index: 100;
+            z-index: 2;
         }
 
         .center {
@@ -122,16 +123,16 @@
             opacity: 0;
             padding: 80px 100px;
             overflow: hidden;
-            box-sizing: border-box;
+            box-sizing:content-box;
             transition: top 500ms ease-in-out,
                 opacity 500ms ease-in-out,
                 height 0ms ease-in-out 500ms;
         }
 
         .overlay-form .close-btn {
-            position: absolute;
+            position:absolute;
             top: 20px;
-            right: 40px;
+            right: 250px;;
             color: #fff;
             font-size: 40px;
             font-weight: 600;
@@ -162,13 +163,14 @@
         }
 
         .overlay-form input {
-            width: 100%;
+            width:85%;
             padding: 6px;
             font-size: 17px;
             border: 2px solid #eee;
             background: transparent;
             outline: none;
             border-radius: 10px;
+            color: white;
         }
 
         .overlay-form button,
@@ -268,6 +270,7 @@
             background: transparent;
             outline: none;
             border-radius: 10px;
+            color: white;
         }
 
         .overlay-formUpdate button,
@@ -293,23 +296,36 @@
                 opacity 500ms ease-in-out,
                 height 0ms ease-in-out 0ms;
         }
+
+        #dimScreen {
+            position: fixed;
+            padding: 0;
+            margin: 0;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.5);
+        }
     </style>
     <script>
         var position = "<%= position %>"
         var isCRUD = "<%= isCRUD %>"
         function checkRole() {
             var dataT = document.getElementById("dataTable");
-            if(isCRUD=="true"){
-                dataT.style.display="block";
-            }else{
-                dataT.style.display="none";
+            if (isCRUD == "true") {
+                dataT.style.display = "block";
+            } else {
+                dataT.style.display = "none";
             }
             var btn = document.getElementById("manageData");
             if (position == 'พนักงาน') btn.style.display = "none";
         }
-        function showTable(){
+        function showTable() {
             var dataT = document.getElementById("dataTable");
-            dataT.style.display="block";
+            dataT.style.display = "block";
         }
         function openForm() {
             document.getElementById("myForm").style.display = "block";
@@ -395,6 +411,18 @@
                                         <label for="inputName">ชื่อ</label>
                                         <input type="text" placeholder="โปรดใส่ชื่อ" name="inputName" id="inputName"
                                             required>
+                                        <!-- <label for="psw">นามสกุล</label>
+                                        <input type="text" placeholder="โปรดใส่นามสกุล" name="inputSurname"
+                                            id="inputSurnanme" required>
+                                        <label for="psw">ตำแหน่ง</label>
+                                        <input type="text" placeholder="โปรดใส่ตำแหน่ง" name="inputPosition"
+                                            id="inputPosition" required>
+                                        <label for="psw">เงินเดือน</label>
+                                        <input type="number" placeholder="โปรดใส่เงินเดือน" name="inputSalary"
+                                            id="inputSalary" required>
+                                        <label for="psw"><b>ยอดขายรวม</b></label>
+                                        <input type="number" placeholder="โปรดใส่ยอดขายรวม" name="inputTotalSale"
+                                            id="inputTotalSale" required> -->
                                     </div>
                                     <div class="form-element">
                                         <label for="psw">นามสกุล</label>
@@ -408,13 +436,24 @@
                                     </div>
                                     <div class="form-element">
                                         <label for="psw">เงินเดือน</label>
-                                        <input type="number" placeholder="โปรดใส่เงินเดือน" name="inputSalary"
+                                        <input type="number" step="any" placeholder="โปรดใส่เงินเดือน" name="inputSalary"
                                             id="inputSalary" required>
                                     </div>
                                     <div class="form-element">
-                                        <label for="psw"><b>ยอดขายรวม</b></label>
+                                        <label for="psw" step="any"><b>ยอดขายรวม</b></label>
                                         <input type="number" placeholder="โปรดใส่ยอดขายรวม" name="inputTotalSale"
                                             id="inputTotalSale" required>
+                                    </div>
+                                    <h1>ข้อมูลเข้าสู่ระบบ</h1>
+                                    <div class="form-element">
+                                        <label for="inputName">Email</label>
+                                        <input type="text" placeholder="โปรดอีเมล" name="inputUser" id="inputUser"
+                                            required>
+                                    </div>
+                                    <div class="form-element">
+                                        <label for="inputName">Password</label>
+                                        <input type="password" placeholder="โปรดใส่รหัสผ่าน" name="inputPassword"
+                                            id="inputPassword" required>
                                     </div>
                                     <div class="form-element">
                                         <button type="submit">Submit</button>
@@ -461,7 +500,8 @@
                                     </td>
                                     <td>
                                         <a class="btn btn-primary" href="#" onclick="toggleFormUpdate()">แก้ไข</a>
-                                        <form action="/update/<%=data[i].id_employee%>" method="POST">
+                                        <form action="/update/<%=data[i].id_employee%>" method="POST"
+                                            id=<%=data[i].total_sale%>>
                                             <div class="overlay-formUpdate w3-text-white">
                                                 <div class="close-btn" onclick="toggleFormUpdate()">&times;</div>
                                                 <h1>แก้ไขข้อมูล</h1>
