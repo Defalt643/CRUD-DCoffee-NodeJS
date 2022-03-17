@@ -123,16 +123,17 @@
             opacity: 0;
             padding: 80px 100px;
             overflow: hidden;
-            box-sizing:content-box;
+            box-sizing: content-box;
             transition: top 500ms ease-in-out,
                 opacity 500ms ease-in-out,
                 height 0ms ease-in-out 500ms;
         }
 
         .overlay-form .close-btn {
-            position:absolute;
+            position: absolute;
             top: 20px;
-            right: 250px;;
+            right: 250px;
+            ;
             color: #fff;
             font-size: 40px;
             font-weight: 600;
@@ -163,7 +164,7 @@
         }
 
         .overlay-form input {
-            width:85%;
+            width: 85%;
             padding: 6px;
             font-size: 17px;
             border: 2px solid #eee;
@@ -313,6 +314,7 @@
     <script>
         var position = "<%= position %>"
         var isCRUD = "<%= isCRUD %>"
+        var data = "<%= data %>"
         function checkRole() {
             var dataT = document.getElementById("dataTable");
             if (isCRUD == "true") {
@@ -342,9 +344,20 @@
         }
 
         function closeFormUpdate() {
+            console.log(index);
             document.getElementById("myFormUpdate").style.display = "none";
-        } function toggleFormUpdate() {
+        } function toggleFormUpdate(i) {
+            var index = parseInt(i);
+            console.log(index);
+            document.getElementById("updateForm").action = "/update/"+index;
+            fillUpdateForm(index);
             document.body.classList.toggle('activeFormUpdate');
+        }function fillUpdateForm(i){
+            console.log("fill update form");
+            // var convertedData = JSON.parse(JSON.stringify(data));
+            // console.log("data : "+convertedData[i]);
+            // console.log(Object.keys(convertedData[i]));
+            // document.getElementById("updateName").value = convertedData[i].name;
         }
 
 
@@ -381,7 +394,7 @@
         <a href="/logout">ออกจากระบบ</a>
     </div>
     <div class="w3-display-position">
-        <div class="div2" id="dataTable">
+        <div class="div2" id="dataTable" style="display: none;">
             <table style="width:100%">
                 <!-- INPUT BUTTON search -->
                 <div class="continer" style="margin-right: 245px;">
@@ -436,8 +449,8 @@
                                     </div>
                                     <div class="form-element">
                                         <label for="psw">เงินเดือน</label>
-                                        <input type="number" step="any" placeholder="โปรดใส่เงินเดือน" name="inputSalary"
-                                            id="inputSalary" required>
+                                        <input type="number" step="any" placeholder="โปรดใส่เงินเดือน"
+                                            name="inputSalary" id="inputSalary" required>
                                     </div>
                                     <div class="form-element">
                                         <label for="psw" step="any"><b>ยอดขายรวม</b></label>
@@ -459,6 +472,45 @@
                                         <button type="submit">Submit</button>
                                     </div>
                                 </div>
+                            </form>
+                            <!-- Update -->
+                            <form id="updateForm" method="POST">
+                                    <div class="overlay-formUpdate w3-text-white">
+                                        <div class="close-btn" onclick="toggleFormUpdate()">&times;</div>
+                                        <h1>แก้ไขข้อมูล</h1>
+                                        <div class="formUpdate-element">
+                                            <label for="updateName">ชื่อ</label>
+                                            <input type="text" placeholder="โปรดใส่ชื่อ" name="updateName"
+                                                id="updateName" style="color: white;"
+                                                required>
+                                        </div>
+                                        <div class="formUpdate-element">
+                                            <label for="psw">นามสกุล</label>
+                                            <input type="text" placeholder="โปรดใส่นามสกุล" name="updateSurname"
+                                                id="updateSurnanme" style="color: white;"
+                                                required>
+                                        </div>
+                                        <div class="formUpdate-element">
+                                            <label for="psw">ตำแหน่ง</label>
+                                            <input type="text" placeholder="โปรดใส่ตำแหน่ง" name="updatePosition"
+                                                id="updatePosition" style="color: white;"
+                                                required>
+                                        </div>
+                                        <div class="formUpdate-element">
+                                            <label for="psw">เงินเดือน</label>
+                                            <input type="number" placeholder="โปรดใส่เงินเดือน" name="updateSalary"
+                                                id="updateSalary" style="color: white;"
+                                                required>
+                                        </div>
+                                        <div class="formUpdate-element">
+                                            <label for="psw"><b>ยอดขายรวม</b></label>
+                                            <input type="number" placeholder="โปรดใส่ยอดขายรวม" name="updateTotalSale"
+                                                id="updateTotalSale" style="color: white;" required>
+                                        </div>
+                                        <div class="formUpdate-element">
+                                            <button type="submit">Submit</button>
+                                        </div>
+                                    </div>
                             </form>
                         </div>
                     </div>
@@ -499,47 +551,8 @@
                                         <%= data[i].total_sale%>
                                     </td>
                                     <td>
-                                        <a class="btn btn-primary" href="#" onclick="toggleFormUpdate()">แก้ไข</a>
-                                        <form action="/update/<%=data[i].id_employee%>" method="POST"
-                                            id=<%=data[i].total_sale%>>
-                                            <div class="overlay-formUpdate w3-text-white">
-                                                <div class="close-btn" onclick="toggleFormUpdate()">&times;</div>
-                                                <h1>แก้ไขข้อมูล</h1>
-                                                <div class="formUpdate-element">
-                                                    <label for="updateName">ชื่อ</label>
-                                                    <input type="text" placeholder="โปรดใส่ชื่อ" name="updateName"
-                                                        id="updateName" value="<%= data[i].name%>" style="color: white;"
-                                                        required>
-                                                </div>
-                                                <div class="formUpdate-element">
-                                                    <label for="psw">นามสกุล</label>
-                                                    <input type="text" placeholder="โปรดใส่นามสกุล" name="updateSurname"
-                                                        id="updateSurnanme" value="<%= data[i].surname%>"
-                                                        style="color: white;" required>
-                                                </div>
-                                                <div class="formUpdate-element">
-                                                    <label for="psw">ตำแหน่ง</label>
-                                                    <input type="text" placeholder="โปรดใส่ตำแหน่ง"
-                                                        name="updatePosition" id="updatePosition"
-                                                        value="<%= data[i].position%>" style="color: white;" required>
-                                                </div>
-                                                <div class="formUpdate-element">
-                                                    <label for="psw">เงินเดือน</label>
-                                                    <input type="number" placeholder="โปรดใส่เงินเดือน"
-                                                        name="updateSalary" id="updateSalary"
-                                                        value="<%= data[i].salary%>" style="color: white;" required>
-                                                </div>
-                                                <div class="formUpdate-element">
-                                                    <label for="psw"><b>ยอดขายรวม</b></label>
-                                                    <input type="number" placeholder="โปรดใส่ยอดขายรวม"
-                                                        name="updateTotalSale" id="inputTotalSale"
-                                                        value="<%= data[i].total_sale%>" style="color: white;" required>
-                                                </div>
-                                                <div class="formUpdate-element">
-                                                    <button type="submit">Submit</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                        <a class="btn btn-primary" href="#"
+                                            onclick="toggleFormUpdate('<%= (i) %>')">แก้ไข</a>
                                     </td>
                                     <td>
                                         <a class="btn btn-danger" onclick="updateDiv()"

@@ -125,14 +125,14 @@ server.get('/delete/:userId', (req, res) => {
     status="true";
     const userId = req.params.userId;
     console.log('userId = ' + userId);
-    con.query("SELECT * FROM `mst_security WHERE id_employee=`"+userId,(err ,rows) =>{
-        console.log(rows);
+    con.query("DELETE FROM `mst_security` WHERE id_employee=" + userId, (err) => {
+        if (err) throw err;
+    });
+    con.query("DELETE FROM `mst_employee` WHERE id_employee=" + userId, (err) => {
+        if (err) throw err;
+        res.setHeader("Content-Type", "text/html");
         res.redirect('/main');
     });
-    // con.query("DELETE FROM `mst_employee` WHERE id_employee=" + userId, (err, result) => {
-    //     if (err) throw err;
-    //     res.redirect('/main');
-    // });
 });
 // function wait(err,time) {
 //     setTimeout(function() {
