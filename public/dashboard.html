@@ -346,20 +346,31 @@
         function closeFormUpdate() {
             console.log(index);
             document.getElementById("myFormUpdate").style.display = "none";
-        } function toggleFormUpdate(i) {
-            var index = parseInt(i);
-            console.log(index);
-            document.getElementById("updateForm").action = "/update/"+index;
-            fillUpdateForm(index);
+        } function toggleFormUpdate(id,name,surname,position,salary,total_sale) {
+            var Id = id;
+            var Name = name;
+            var Surname= surname;
+            var Position = position;
+            var Salary = salary;
+            var Total_sale = total_sale;
+            console.log(Id + " "+ Name + " "+Surname + " "+ Position+ " " +Salary + " "+ total_sale);
+            document.getElementById("updateIndex").innerHTML = "ID : "+Id;
+            document.getElementById("updateName").value = Name;
+            document.getElementById("updateSurname").value = Surname;
+            document.getElementById("updatePosition").value = Position;
+            document.getElementById("updateSalary").value = Salary;
+            document.getElementById("updateTotalSale").value = Total_sale;
+            document.getElementById("updateForm").action = "/update/"+Id;
             document.body.classList.toggle('activeFormUpdate');
-        }function fillUpdateForm(i){
-            console.log("fill update form");
-            // var convertedData = JSON.parse(JSON.stringify(data));
-            // console.log("data : "+convertedData[i]);
-            // console.log(Object.keys(convertedData[i]));
-            // document.getElementById("updateName").value = convertedData[i].name;
+        }function closeUpdate(){
+            console.log("close update form")
+            document.body.classList.toggle('activeFormUpdate');
         }
 
+        var validate = function (e) {
+            var t = e.value;
+            e.value = (t.indexOf(".") >= 0) ? (t.substr(0, t.indexOf(".")) + t.substr(t.indexOf("."), 8)) : t;
+        }
 
 
     </script>
@@ -423,7 +434,7 @@
                                     <div class="form-element">
                                         <label for="inputName">ชื่อ</label>
                                         <input type="text" placeholder="โปรดใส่ชื่อ" name="inputName" id="inputName"
-                                            required>
+                                            maxlength="50" required>
                                         <!-- <label for="psw">นามสกุล</label>
                                         <input type="text" placeholder="โปรดใส่นามสกุล" name="inputSurname"
                                             id="inputSurnanme" required>
@@ -440,33 +451,33 @@
                                     <div class="form-element">
                                         <label for="psw">นามสกุล</label>
                                         <input type="text" placeholder="โปรดใส่นามสกุล" name="inputSurname"
-                                            id="inputSurnanme" required>
+                                            maxlength="50" id="inputSurnanme" required>
                                     </div>
                                     <div class="form-element">
                                         <label for="psw">ตำแหน่ง</label>
                                         <input type="text" placeholder="โปรดใส่ตำแหน่ง" name="inputPosition"
-                                            id="inputPosition" required>
+                                            maxlength="50" id="inputPosition" required>
                                     </div>
                                     <div class="form-element">
                                         <label for="psw">เงินเดือน</label>
                                         <input type="number" step="any" placeholder="โปรดใส่เงินเดือน"
-                                            name="inputSalary" id="inputSalary" required>
+                                            name="inputSalary" id="inputSalary" oninput="validate(this)" required>
                                     </div>
                                     <div class="form-element">
                                         <label for="psw" step="any"><b>ยอดขายรวม</b></label>
                                         <input type="number" placeholder="โปรดใส่ยอดขายรวม" name="inputTotalSale"
-                                            id="inputTotalSale" required>
+                                            id="inputTotalSale" oninput="validate(this)" step=".0000001" required>
                                     </div>
                                     <h1>ข้อมูลเข้าสู่ระบบ</h1>
                                     <div class="form-element">
                                         <label for="inputName">Email</label>
                                         <input type="text" placeholder="โปรดอีเมล" name="inputUser" id="inputUser"
-                                            required>
+                                            maxlength="50" required>
                                     </div>
                                     <div class="form-element">
                                         <label for="inputName">Password</label>
                                         <input type="password" placeholder="โปรดใส่รหัสผ่าน" name="inputPassword"
-                                            id="inputPassword" required>
+                                            id="inputPassword" maxlength="50" required>
                                     </div>
                                     <div class="form-element">
                                         <button type="submit">Submit</button>
@@ -475,42 +486,40 @@
                             </form>
                             <!-- Update -->
                             <form id="updateForm" method="POST">
-                                    <div class="overlay-formUpdate w3-text-white">
-                                        <div class="close-btn" onclick="toggleFormUpdate()">&times;</div>
-                                        <h1>แก้ไขข้อมูล</h1>
-                                        <div class="formUpdate-element">
-                                            <label for="updateName">ชื่อ</label>
-                                            <input type="text" placeholder="โปรดใส่ชื่อ" name="updateName"
-                                                id="updateName" style="color: white;"
-                                                required>
-                                        </div>
-                                        <div class="formUpdate-element">
-                                            <label for="psw">นามสกุล</label>
-                                            <input type="text" placeholder="โปรดใส่นามสกุล" name="updateSurname"
-                                                id="updateSurnanme" style="color: white;"
-                                                required>
-                                        </div>
-                                        <div class="formUpdate-element">
-                                            <label for="psw">ตำแหน่ง</label>
-                                            <input type="text" placeholder="โปรดใส่ตำแหน่ง" name="updatePosition"
-                                                id="updatePosition" style="color: white;"
-                                                required>
-                                        </div>
-                                        <div class="formUpdate-element">
-                                            <label for="psw">เงินเดือน</label>
-                                            <input type="number" placeholder="โปรดใส่เงินเดือน" name="updateSalary"
-                                                id="updateSalary" style="color: white;"
-                                                required>
-                                        </div>
-                                        <div class="formUpdate-element">
-                                            <label for="psw"><b>ยอดขายรวม</b></label>
-                                            <input type="number" placeholder="โปรดใส่ยอดขายรวม" name="updateTotalSale"
-                                                id="updateTotalSale" style="color: white;" required>
-                                        </div>
-                                        <div class="formUpdate-element">
-                                            <button type="submit">Submit</button>
-                                        </div>
+                                <div class="overlay-formUpdate w3-text-white">
+                                    <div class="close-btn" onclick="closeUpdate()">&times;</div>
+                                    <h1>แก้ไขข้อมูล</h1>
+                                    <h1 id="updateIndex">ID :</h1>
+                                    <div class="formUpdate-element">
+                                        <label for="updateName">ชื่อ</label>
+                                        <input type="text" placeholder="โปรดใส่ชื่อ" name="updateName" id="updateName"
+                                            style="color: white;" maxlength="50" required>
                                     </div>
+                                    <div class="formUpdate-element">
+                                        <label for="psw">นามสกุล</label>
+                                        <input type="text" placeholder="โปรดใส่นามสกุล" name="updateSurname"
+                                            id="updateSurname" style="color: white;" maxlength="50" required>
+                                    </div>
+                                    <div class="formUpdate-element">
+                                        <label for="psw">ตำแหน่ง</label>
+                                        <input type="text" placeholder="โปรดใส่ตำแหน่ง" name="updatePosition"
+                                            id="updatePosition" style="color: white;" maxlength="50" required>
+                                    </div>
+                                    <div class="formUpdate-element">
+                                        <label for="psw">เงินเดือน</label>
+                                        <input type="text" placeholder="โปรดใส่เงินเดือน" name="updateSalary"
+                                            id="updateSalary" style="color: white;" oninput="validate(this)" required>
+                                    </div>
+                                    <div class="formUpdate-element">
+                                        <label for="psw"><b>ยอดขายรวม</b></label>
+                                        <input type="text" placeholder="โปรดใส่ยอดขายรวม" name="updateTotalSale"
+                                            id="updateTotalSale" style="color: white;" oninput="validate(this)"
+                                            required>
+                                    </div>
+                                    <div class="formUpdate-element">
+                                        <button type="submit">Submit</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -552,7 +561,7 @@
                                     </td>
                                     <td>
                                         <a class="btn btn-primary" href="#"
-                                            onclick="toggleFormUpdate('<%= (i) %>')">แก้ไข</a>
+                                            onclick="toggleFormUpdate('<%= data[i].id_employee %>','<%= data[i].name %>','<%= data[i].surname %>','<%= data[i].position %>','<%= data[i].salary %>','<%= data[i].total_sale %>')">แก้ไข</a>
                                     </td>
                                     <td>
                                         <a class="btn btn-danger" onclick="updateDiv()"

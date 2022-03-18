@@ -47,6 +47,7 @@ server.post('/login', function (req, res) {
     user = {}
     let email = req.body.email;
     let password = req.body.password;
+    status=false;
     con.query('SELECT * FROM mst_security WHERE user = ?', [email], function (err, data) {
         if (err) {
             console.log("err");
@@ -186,10 +187,15 @@ server.post('/update/:userId', function (req, res) {
     var position = req.body.updatePosition;
     var salary = req.body.updateSalary;
     var totalSale = req.body.updateTotalSale;
-    console.log(name + " " + surname + " " + position + " " + salary + " " + totalSale)
+    console.log(userId+" "+name + " " + surname + " " + position + " " + salary + " " + totalSale);
     var emp = { name, surname, position, salary, totalSale }
-    con.query("UPDATE mst_employee SET name=" + name + ",surname=" + surname + ",position=" + position + ",salary=" + salary + ",total_sale=" + totalSale + " WHERE id_employee=" + userId, function (err) {
-        if (err) return err;
+    con.query("UPDATE mst_employee SET name = ? , surname= ? , position = ? , salary = ? , total_sale = ? WHERE id_employee = ?",[name,surname,position,salary,totalSale,userId], function (err) {
+        if (err){
+            console.log("ERROR UPDATE");
+            console.log(err);
+            return err;
+        } 
+        console.log("UPDATE query")
         res.redirect('/main');
     })
 });
@@ -198,11 +204,15 @@ server.post('/search', function (req, res) {
     status=true;
     var index = "";
     index = req.body.searchBox;
-    if (index == "") {
+    if (index == "" || req.body.searchBox =="" || index === [] || index == []) {
         res.redirect('/main');
-    } if (index === []) {
-        res.redirect('/main');
-    }console.log(typeof index);
+    } 
+    // if (index === []) {
+    //     res.redirect('/main');
+    // }if (index == []) {
+    //     res.redirect('/main');
+    // }
+    console.log(typeof index);
     console.log("Index are "+index);
     if (isNaN(index) == false) {
         console.log("Index are type of number")
