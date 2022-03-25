@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/databasedcoffee.appspot.com/o/fnon.min.css?alt=media&token=0e3ac39c-49dc-4fba-b1ee-eca97d0dbe5d">
+ 
+    <title>Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            height: 100%;
+        }
+
+        /* Style the header */
+        .header {
+            background-color: #ffffff;
+            padding: 20px;
+
+        }
+
+        /* Style the top navigation bar */
+
+
+        .sidenav {
+            height: 100%;
+            /* Full-height: remove this if you want "auto" height */
+            width: 160px;
+            /* Set the width of the sidebar */
+            position: fixed;
+            /* Fixed Sidebar (stay in place on scroll) */
+            z-index: 1;
+            /* Stay on top */
+            top: 8;
+            /* Stay at the top */
+            left: 5;
+            background-color: rgb(250, 250, 250);
+            /* Black */
+            overflow-x: hidden;
+            /* Disable horizontal scroll */
+            padding-top: 20px;
+        }
+
+        /* The navigation menu links */
+        .sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #000000;
+            display: block;
+        }
+
+        /* When you mouse over the navigation links, change their color */
+        .sidenav a:hover {
+            color: #747474;
+        }
+
+
+        /* Create three equal columns that floats next to each other */
+        .column {
+            float: right;
+            width: 29.83%;
+            padding: 15px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Style the footer */
+        .footer {
+            background-color: #01f74b;
+            padding: 2px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            z-index: 2;
+        }
+
+        .center {
+            margin: auto;
+            width: 60%;
+            padding: 10px;
+        }
+
+        tr td:last-child {
+            width: 1%;
+            white-space: nowrap;
+        }
+
+        body {
+            margin: 0px;
+            font-family: "Open Sans", sans-serif;
+            background: #ddd;
+        }
+
+        .overlay-form {
+            position: absolute;
+            top: 50vh;
+            left: 0px;
+            width: 100vw;
+            height: 0vh;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: -1;
+            opacity: 0;
+            padding: 80px 100px;
+            overflow: hidden;
+            box-sizing: content-box;
+            transition: top 500ms ease-in-out,
+                opacity 500ms ease-in-out,
+                height 0ms ease-in-out 500ms;
+        }
+
+        .overlay-form .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 250px;
+            ;
+            color: #fff;
+            font-size: 40px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .overlay-form h1 {
+            font-size: 32px;
+            color: #fff;
+        }
+
+        .overlay-form p {
+            font-size: 16px;
+            color: #eee;
+            margin: -15px 0px 30px;
+        }
+
+        .overlay-form .form-element {
+            color: white;
+            margin: 20px 0px;
+        }
+
+        .overlay-form label {
+            display: block;
+            font-size: 17px;
+            color: #eee;
+            margin-bottom: 5px;
+        }
+
+        .overlay-form input {
+            width: 85%;
+            padding: 6px;
+            font-size: 17px;
+            border: 2px solid #eee;
+            background: transparent;
+            outline: none;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .overlay-form button,
+        .center button {
+            margin-top: 10px;
+            width: 100px;
+            height: 35px;
+            font-size: 15px;
+            text-transform: uppercase;
+            background: #fff;
+            color: #222;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+        }
+
+        .center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .center button {
+            width: 150px;
+            height: 40px;
+            font-weight: 600;
+            box-shadow: 3px 3px 2px 1px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        body.activeForm .overlay-form {
+            z-index: 2;
+            opacity: 1;
+            top: 0px;
+            height: 100vh;
+            transition: top 500ms ease-in-out,
+                opacity 500ms ease-in-out,
+                height 0ms ease-in-out 0ms;
+        }
+
+        .overlay-formUpdate {
+            position: absolute;
+            top: 50vh;
+            left: 0px;
+            width: 100vw;
+            height: 0vh;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: -1;
+            opacity: 0;
+            padding: 80px 100px;
+            overflow: hidden;
+            box-sizing: content-box;
+            transition: top 500ms ease-in-out,
+                opacity 500ms ease-in-out,
+                height 0ms ease-in-out 500ms;
+        }
+
+        .overlay-formUpdate .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 250px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .overlay-formUpdate h1 {
+            font-size: 32px;
+            color: #fff;
+        }
+
+        .overlay-formUpdate p {
+            font-size: 16px;
+            color: #eee;
+            margin: -15px 0px 30px;
+        }
+
+        .overlay-formUpdate .formUpdate-element {
+            color: white;
+            margin: 20px 0px;
+        }
+
+        .overlay-formUpdate label {
+            display: block;
+            font-size: 17px;
+            color: #eee;
+            margin-bottom: 5px;
+        }
+
+        .overlay-formUpdate input {
+            width: 85%;
+            padding: 6px;
+            font-size: 17px;
+            border: 2px solid #eee;
+            background: transparent;
+            outline: none;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .overlay-formUpdate button,
+        .center button {
+            margin-top: 10px;
+            width: 100px;
+            height: 35px;
+            font-size: 15px;
+            text-transform: uppercase;
+            background: #fff;
+            color: #222;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+        }
+
+        body.activeFormUpdate .overlay-formUpdate {
+            z-index: 2;
+            opacity: 1;
+            top: 0px;
+            height: 100vh;
+            transition: top 500ms ease-in-out,
+                opacity 500ms ease-in-out,
+                height 0ms ease-in-out 0ms;
+        }
+
+        #dimScreen {
+            position: fixed;
+            padding: 0;
+            margin: 0;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+    <script>
+        var position = "<%= position %>"
+        var isCRUD = "<%= isCRUD %>"
+        var data = "<%= data %>"
+        function checkRole() {
+            var dataT = document.getElementById("dataTable");
+            if (isCRUD == "true") {
+                dataT.style.display = "block";
+            } else {
+                dataT.style.display = "none";
+            }
+            var btn = document.getElementById("manageData");
+            if (position == 'พนักงาน') btn.style.display = "none";
+        }
+        function showTable() {
+            var dataT = document.getElementById("dataTable");
+            dataT.style.display = "block";
+        }
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function openFormUpdate() {
+            document.getElementById("myFormUpdate").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        } function toggleForm() {
+            document.body.classList.toggle('activeForm');
+        }
+
+        function closeFormUpdate() {
+            console.log(index);
+            document.getElementById("myFormUpdate").style.display = "none";
+        } function toggleFormUpdate(id, name, surname, position, salary, total_sale, user, password) {
+            var Id = id;
+            var Name = name;
+            var Surname = surname;
+            var Position = position;
+            var Salary = salary;
+            var Total_sale = total_sale;
+            var User = user;
+            var Password = password;
+            console.log(Id + " " + Name + " " + Surname + " " + Position + " " + Salary + " " + total_sale + " " + User + " " + password);
+            document.getElementById("updateIndex").innerHTML = "ID : " + Id;
+            document.getElementById("updateName").value = Name;
+            document.getElementById("updateSurname").value = Surname;
+            document.getElementById("updatePosition").value = Position;
+            document.getElementById("updateSalary").value = Salary;
+            document.getElementById("updateTotalSale").value = Total_sale;
+            document.getElementById("updateUser").value = User;
+            document.getElementById("updatePassword").value = Password;
+            document.getElementById("updateForm").action = "/update/" + Id;
+            document.body.classList.toggle('activeFormUpdate');
+        } function closeUpdate() {
+            console.log("close update form")
+            document.body.classList.toggle('activeFormUpdate');
+        }
+
+        var validate = function (e) {
+            var t = e.value;
+            e.value = (t.indexOf(".") >= 0) ? (t.substr(0, t.indexOf(".")) + t.substr(t.indexOf("."), 8)) : t;
+        }
+        function confirmDelete(name,surname,position,id) {
+            var Name = name;
+            var Surname = surname;
+            var Position  = position;
+            var Id=id;
+            console.log(Name + " "+ Surname+" "+Position+" "+Id);
+            if (!confirm('Are you sure?\nข้อมูลผู้ใช้:\nชื่อ : '+Name+"      สกุล : "+Surname+"\nตำแหน่ง : "+Position)) {
+                return false;
+            }else{
+                location.href = 'delete/'+Id;
+            }
+        }
+
+    </script>
+</head>
+
+<body onload="checkRole()">
+    <div class="footer"></div>
+    <div class="header">
+
+        <table border="0">
+            <tr>
+                <td>
+                    <img src="https://firebasestorage.googleapis.com/v0/b/image-78533.appspot.com/o/LOGO.jpg?alt=media&token=2cf8f078-3b91-4507-9ba3-fed6e649946c"
+                        alt="" width="75" style="align-items: flex-start;">
+                </td>
+                <td>
+                    <img src="https://firebasestorage.googleapis.com/v0/b/image-78533.appspot.com/o/MEMBER.jpg?alt=media&token=0593e931-01cb-4662-be7c-e34a7da5fe85"
+                        alt="" width="75" style="align-items: flex-start;float: right;">
+                </td>
+                <td>
+                    <h style="text-align: right;">ชื่อ:</h>
+                    <h style="color: red;">
+                        <%= name %>
+                            <%= surname %>
+                    </h>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="sidenav">
+        <a href="#" onclick="showTable()" id="manageData">จัดการข้อมูลผู้ใช้</a>
+        <a href="/logout">ออกจากระบบ</a>
+    </div>
+    <div class="w3-display-position">
+        <div class="div2" id="dataTable" style="display: none;">
+            <table style="width:100%">
+                <!-- INPUT BUTTON search -->
+                <div class="continer" style="margin-right: 245px;">
+                    <div class="d-flex bd-highlight mb-3">
+                        <form action="/search" method="POST">
+                            <div class="me-auto p-2 bd-highlight"></div>
+                            <div class="p-2 bd-highlight">
+                                <div class="input-group">
+                                    <b style="padding: 5px;">ค้นหาข้อมูลผู้ใช้ :</b>
+                                    &nbsp; &nbsp;
+                                    <input type="text" class="form-control" placeholder="ค้นหาข้อมูล" name="searchBox"
+                                        id="searchBox">
+                                </div>
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                <button type="submit" class="btn btn-info">ค้นหา</button>
+                            </div>
+                        </form>
+                        &nbsp; &nbsp;
+                        <div class="p-2 bd-highlight">
+                            <button type="button" class="btn btn-success" onclick="toggleForm()">เพิ่มข้อมูล</button>
+                            <form action="/insert" method="POST">
+                                <div class="overlay-form">
+                                    <div class="close-btn" onclick="toggleForm()">&times;</div>
+                                    <h1>เพิ่มข้อมูล</h1>
+                                    <div class="form-element">
+                                        <label for="inputName">ชื่อ</label>
+                                        <input type="text" placeholder="โปรดใส่ชื่อ" name="inputName" id="inputName"
+                                            maxlength="50" required>
+                                        <!-- <label for="psw">นามสกุล</label>
+                                        <input type="text" placeholder="โปรดใส่นามสกุล" name="inputSurname"
+                                            id="inputSurnanme" required>
+                                        <label for="psw">ตำแหน่ง</label>
+                                        <input type="text" placeholder="โปรดใส่ตำแหน่ง" name="inputPosition"
+                                            id="inputPosition" required>
+                                        <label for="psw">เงินเดือน</label>
+                                        <input type="number" placeholder="โปรดใส่เงินเดือน" name="inputSalary"
+                                            id="inputSalary" required>
+                                        <label for="psw"><b>ยอดขายรวม</b></label>
+                                        <input type="number" placeholder="โปรดใส่ยอดขายรวม" name="inputTotalSale"
+                                            id="inputTotalSale" required> -->
+                                    </div>
+                                    <div class="form-element">
+                                        <label for="psw">นามสกุล</label>
+                                        <input type="text" placeholder="โปรดใส่นามสกุล" name="inputSurname"
+                                            maxlength="50" id="inputSurnanme" required>
+                                    </div>
+                                    <div class="form-element">
+                                        <label for="psw">ตำแหน่ง</label>
+                                        <input type="text" placeholder="โปรดใส่ตำแหน่ง" name="inputPosition"
+                                            maxlength="50" id="inputPosition" required>
+                                    </div>
+                                    <div class="form-element">
+                                        <label for="psw">เงินเดือน</label>
+                                        <input type="number" step="any" placeholder="โปรดใส่เงินเดือน"
+                                            name="inputSalary" id="inputSalary" oninput="validate(this)" required>
+                                    </div>
+                                    <div class="form-element">
+                                        <label for="psw" step="any"><b>ยอดขายรวม</b></label>
+                                        <input type="number" placeholder="โปรดใส่ยอดขายรวม" name="inputTotalSale"
+                                            id="inputTotalSale" oninput="validate(this)" step=".0000001" required>
+                                    </div>
+                                    <h1>ข้อมูลเข้าสู่ระบบ</h1>
+                                    <div class="form-element">
+                                        <label for="inputName">Email</label>
+                                        <input type="text" placeholder="โปรดอีเมล" name="inputUser" id="inputUser"
+                                            maxlength="50" required>
+                                    </div>
+                                    <div class="form-element">
+                                        <label for="inputName">Password</label>
+                                        <input type="text" placeholder="โปรดใส่รหัสผ่าน" name="inputPassword"
+                                            id="inputPassword" maxlength="50" required>
+                                    </div>
+                                    <div class="form-element">
+                                        <button type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- Update -->
+                            <form id="updateForm" method="POST">
+                                <div class="overlay-formUpdate w3-text-white">
+                                    <div class="close-btn" onclick="closeUpdate()">&times;</div>
+                                    <h1>แก้ไขข้อมูล<h1 id="updateIndex">ID :</h1>
+                                    </h1>
+                                    <div class="formUpdate-element">
+                                        <label for="updateName">ชื่อ</label>
+                                        <input type="text" placeholder="โปรดใส่ชื่อ" name="updateName" id="updateName"
+                                            style="color: white;" maxlength="50" required>
+                                    </div>
+                                    <div class="formUpdate-element">
+                                        <label for="psw">นามสกุล</label>
+                                        <input type="text" placeholder="โปรดใส่นามสกุล" name="updateSurname"
+                                            id="updateSurname" style="color: white;" maxlength="50" required>
+                                    </div>
+                                    <div class="formUpdate-element">
+                                        <label for="psw">ตำแหน่ง</label>
+                                        <input type="text" placeholder="โปรดใส่ตำแหน่ง" name="updatePosition"
+                                            id="updatePosition" style="color: white;" maxlength="50" required>
+                                    </div>
+                                    <div class="formUpdate-element">
+                                        <label for="psw">เงินเดือน</label>
+                                        <input type="text" placeholder="โปรดใส่เงินเดือน" name="updateSalary"
+                                            id="updateSalary" style="color: white;" oninput="validate(this)" required>
+                                    </div>
+                                    <div class="formUpdate-element">
+                                        <label for="psw"><b>ยอดขายรวม</b></label>
+                                        <input type="text" placeholder="โปรดใส่ยอดขายรวม" name="updateTotalSale"
+                                            id="updateTotalSale" style="color: white;" oninput="validate(this)"
+                                            required>
+                                    </div>
+                                    <h1>ข้อมูลเข้าสู่ระบบ</h1>
+                                    <div class="form-element">
+                                        <label for="inputName">Email</label>
+                                        <input type="text" placeholder="โปรดอีเมล" name="updateUser" id="updateUser"
+                                            maxlength="50" required>
+                                    </div>
+                                    <div class="form-element">
+                                        <label for="inputName">Password</label>
+                                        <input type="text" placeholder="โปรดใส่รหัสผ่าน" name="updatePassword"
+                                            id="updatePassword" maxlength="50" required>
+                                    </div>
+                                    <div class="formUpdate-element">
+                                        <button type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <tr>
+                    <table class="table table-dark table-striped" style="width:70%" align="center">
+                        <thead>
+                            <tr>
+                                <th>ลำดับ</th>
+                                <th>ชื่อ</th>
+                                <th>สกุล</th>
+                                <th>ตำแหน่ง</th>
+                                <th>เงินเดือน</th>
+                                <th>ยอดขายรวม</th>
+                                <th>แก้ไข</th>
+                                <th>ลบ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if(data.length){ for(var i=0; i< data.length; i++) {%>
+                                <tr>
+                                    <th scope="row">
+                                        <%= (i+1) %>
+                                    </th>
+                                    <td>
+                                        <%= data[i].name%>
+                                    </td>
+                                    <td>
+                                        <%= data[i].surname%>
+                                    </td>
+                                    <td>
+                                        <%= data[i].position%>
+                                    </td>
+                                    <td>
+                                        <%= data[i].salary%>
+                                    </td>
+                                    <td>
+                                        <%= data[i].total_sale%>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary" href="#"
+                                            onclick="toggleFormUpdate('<%= data[i].id_employee %>','<%= data[i].name %>','<%= data[i].surname %>','<%= data[i].position %>','<%= data[i].salary %>','<%= data[i].total_sale %>','<%= securityRows[i].user %>','<%= securityRows[i].password %>')">แก้ไข</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-danger" onclick="confirmDelete('<%= data[i].name %>','<%= data[i].surname %>','<%= data[i].position %>','<%= data[i].id_employee %>')">ลบ</a>
+                                    </td>
+
+                                </tr>
+                                <% } }else{ %>
+                                    <tr>
+                                        <td colspan="3">No user</td>
+                                    </tr>
+                                    <% } %>
+                        </tbody>
+                    </table>
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+
+</body>
+
+</html>

@@ -40,6 +40,7 @@ server.get('/logout', function (req, res) {
     con.query('INSERT INTO trn_logout (id_employee, datetime_logout) VALUES (?, NOW())', id, function (err) {
         if (err) return err;
     })
+    status = false;
     res.render(__dirname + "/public/login.html")
 });
 
@@ -84,12 +85,11 @@ server.get('/main', function (req, res) {
         lastid = Object.values(JSON.parse(JSON.stringify(dataId))).length;
         console.log(lastid)
     });
-    // con.query('SELECT * FROM mst_employee',function(err,dataList){
-    //     console.log(dataList)
-    // });
-    // con.query('INSERT INTO trn_login (id_employee, datetime_login) VALUES (?, NOW())', id, function (err) {
-    //     if (err) return err;
-    // })
+    var securityRows;
+    con.query('SELECT * FROM `mst_security`',(err,rows) =>{
+        if (err) return err;
+        securityRows =rows;
+    });
     con.query('SELECT * FROM `mst_employee`', (err, rows) => {
         if (err) return err;
         if (status) {
@@ -98,6 +98,7 @@ server.get('/main', function (req, res) {
                 name: user.data.name,
                 surname: user.data.surname,
                 position: user.data.position,
+                securityRows: securityRows,
                 isCRUD: "true"
             })
         } else {
@@ -106,40 +107,38 @@ server.get('/main', function (req, res) {
                 name: user.data.name,
                 surname: user.data.surname,
                 position: user.data.position,
+                securityRows: securityRows,
                 isCRUD: "false"
-
             })
         }
-
         console.log('ID Login' + user.data.id_employee + ' ' + user.data.name + ' ' + user.data.surname + ' ' + user.data.position)
         console.log('-------------------------')
         console.log(rows)
     })
-    // res.render(__dirname + "/public/dashboard.html", {
-    //     name: user.data.name,
-    //     surname: user.data.surname,
-    //     position: user.data.position,
-    //     data:JSON.parse(JSON.stringify(dataList))
-    // })
 })
-server.get('/delete/:userId', (req, res) => {
+server.get('/delete/:userId',async (req, res) => {
     status="true";
     const userId = req.params.userId;
     console.log('userId = ' + userId);
-    con.query("DELETE FROM `mst_security` WHERE id_employee=" + userId, (err) => {
+    await con.query("DELETE FROM `trn_logout` WHERE id_employee=" + userId, (err) => {
         if (err) throw err;
+        console.log("DELETED id_employee:"+ userId+" form 'trn_logout'")
     });
-    con.query("DELETE FROM `mst_employee` WHERE id_employee=" + userId, (err) => {
+    await con.query("DELETE FROM `trn_login` WHERE id_employee=" + userId, (err) => {
         if (err) throw err;
+        console.log("DELETED id_employee:"+ userId+" form 'trn_logout'")
+    });
+    await con.query("DELETE FROM `mst_security` WHERE id_employee=" + userId, (err) => {
+        if (err) throw err;
+        console.log("DELETED id_employee:"+ userId+" form 'mst_security'")
+    });
+    await con.query("DELETE FROM `mst_employee` WHERE id_employee=" + userId, (err) => {
+        if (err) throw err;
+        console.log("DELETED id_employee:"+ userId+" form 'mst_security'")
         res.setHeader("Content-Type", "text/html");
         res.redirect('/main');
     });
 });
-// function wait(err,time) {
-//     setTimeout(function() {
-//         err.fadeOut()
-//     }, time);
-//   }
 server.post('/insert',async function (req, res) {
     console.log("INSERT");
     status="true";
@@ -156,7 +155,7 @@ server.post('/insert',async function (req, res) {
     console.log("email:"+user);
     console.log("password:"+password);
     var emp = { name, surname, position, salary, totalSale }
-    con.query("INSERT INTO mst_employee (`id_employee`, `name`, `surname`, `position`, `salary`, `total_sale`) VALUES (?,?,?,?,?,?)", [NULL, name, surname, position, salary, totalSale], function (err) {
+    con.query("INSERT INTO mst_employee (`name`, `surname`, `position`, `salary`, `total_sale`) VALUES (?,?,?,?,?)", [name, surname, position, salary, totalSale], function (err) {
         if (err) return err;
     });
     var data;
@@ -171,7 +170,7 @@ server.post('/insert',async function (req, res) {
         console.log(data[data.length-1]);
         console.log(fkId)
         // wait(err,1000);
-        con.query("INSERT INTO `mst_security` (`id_security`,`user`,`password`,`id_employee`) VALUES(?,?,?,?)",[NULL,user,password,fkId],function(err){
+        con.query("INSERT INTO `mst_security` (`user`,`password`,`id_employee`) VALUES(?,?,?)",[user,password,fkId],function(err){
             if (err) return err;
         });
     });
@@ -207,11 +206,6 @@ server.post('/search', function (req, res) {
     if (index == "" || req.body.searchBox =="" || index === [] || index == []) {
         res.redirect('/main');
     } 
-    // if (index === []) {
-    //     res.redirect('/main');
-    // }if (index == []) {
-    //     res.redirect('/main');
-    // }
     console.log(typeof index);
     console.log("Index are "+index);
     if (isNaN(index) == false) {

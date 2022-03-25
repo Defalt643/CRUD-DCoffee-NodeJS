@@ -1,0 +1,22 @@
+{
+  "name": "dcoffee",
+  "version": "1.0.0",
+  "description": "",
+  "main": "62160244.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Defalt643/CRUD-DCoffee-NodeJS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Defalt643/CRUD-DCoffee-NodeJS/issues"
+  },
+  "homepage": "https://github.com/Defalt643/CRUD-DCoffee-NodeJS#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}

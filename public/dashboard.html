@@ -14,6 +14,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/databasedcoffee.appspot.com/o/fnon.min.css?alt=media&token=0e3ac39c-49dc-4fba-b1ee-eca97d0dbe5d">
+ 
     <title>Dashboard</title>
     <style>
         * {
@@ -224,7 +229,7 @@
             opacity: 0;
             padding: 80px 100px;
             overflow: hidden;
-            box-sizing: border-box;
+            box-sizing: content-box;
             transition: top 500ms ease-in-out,
                 opacity 500ms ease-in-out,
                 height 0ms ease-in-out 500ms;
@@ -233,7 +238,7 @@
         .overlay-formUpdate .close-btn {
             position: absolute;
             top: 20px;
-            right: 40px;
+            right: 250px;
             color: #fff;
             font-size: 40px;
             font-weight: 600;
@@ -264,7 +269,7 @@
         }
 
         .overlay-formUpdate input {
-            width: 100%;
+            width: 85%;
             padding: 6px;
             font-size: 17px;
             border: 2px solid #eee;
@@ -323,7 +328,8 @@
                 dataT.style.display = "none";
             }
             var btn = document.getElementById("manageData");
-            if (position == 'พนักงาน') btn.style.display = "none";
+            if (position != 'เจ้าของร้าน') btn.style.display = "none";
+            else btn.style.display = "block";
         }
         function showTable() {
             var dataT = document.getElementById("dataTable");
@@ -346,23 +352,27 @@
         function closeFormUpdate() {
             console.log(index);
             document.getElementById("myFormUpdate").style.display = "none";
-        } function toggleFormUpdate(id,name,surname,position,salary,total_sale) {
+        } function toggleFormUpdate(id, name, surname, position, salary, total_sale, user, password) {
             var Id = id;
             var Name = name;
-            var Surname= surname;
+            var Surname = surname;
             var Position = position;
             var Salary = salary;
             var Total_sale = total_sale;
-            console.log(Id + " "+ Name + " "+Surname + " "+ Position+ " " +Salary + " "+ total_sale);
-            document.getElementById("updateIndex").innerHTML = "ID : "+Id;
+            var User = user;
+            var Password = password;
+            console.log(Id + " " + Name + " " + Surname + " " + Position + " " + Salary + " " + total_sale + " " + User + " " + password);
+            document.getElementById("updateIndex").innerHTML = "ID : " + Id;
             document.getElementById("updateName").value = Name;
             document.getElementById("updateSurname").value = Surname;
             document.getElementById("updatePosition").value = Position;
             document.getElementById("updateSalary").value = Salary;
             document.getElementById("updateTotalSale").value = Total_sale;
-            document.getElementById("updateForm").action = "/update/"+Id;
+            document.getElementById("updateUser").value = User;
+            document.getElementById("updatePassword").value = Password;
+            document.getElementById("updateForm").action = "/update/" + Id;
             document.body.classList.toggle('activeFormUpdate');
-        }function closeUpdate(){
+        } function closeUpdate() {
             console.log("close update form")
             document.body.classList.toggle('activeFormUpdate');
         }
@@ -371,7 +381,18 @@
             var t = e.value;
             e.value = (t.indexOf(".") >= 0) ? (t.substr(0, t.indexOf(".")) + t.substr(t.indexOf("."), 8)) : t;
         }
-
+        function confirmDelete(name,surname,position,id) {
+            var Name = name;
+            var Surname = surname;
+            var Position  = position;
+            var Id=id;
+            console.log(Name + " "+ Surname+" "+Position+" "+Id);
+            if (!confirm('Are you sure?\nข้อมูลผู้ใช้:\nชื่อ : '+Name+"      สกุล : "+Surname+"\nตำแหน่ง : "+Position)) {
+                return false;
+            }else{
+                location.href = 'delete/'+Id;
+            }
+        }
 
     </script>
 </head>
@@ -401,7 +422,7 @@
         </table>
     </div>
     <div class="sidenav">
-        <a href="#" onclick="showTable()" id="manageData">จัดการข้อมูลผู้ใช้</a>
+        <a href="#" onclick="showTable()" id="manageData" style="display: none;">จัดการข้อมูลผู้ใช้</a>
         <a href="/logout">ออกจากระบบ</a>
     </div>
     <div class="w3-display-position">
@@ -435,18 +456,6 @@
                                         <label for="inputName">ชื่อ</label>
                                         <input type="text" placeholder="โปรดใส่ชื่อ" name="inputName" id="inputName"
                                             maxlength="50" required>
-                                        <!-- <label for="psw">นามสกุล</label>
-                                        <input type="text" placeholder="โปรดใส่นามสกุล" name="inputSurname"
-                                            id="inputSurnanme" required>
-                                        <label for="psw">ตำแหน่ง</label>
-                                        <input type="text" placeholder="โปรดใส่ตำแหน่ง" name="inputPosition"
-                                            id="inputPosition" required>
-                                        <label for="psw">เงินเดือน</label>
-                                        <input type="number" placeholder="โปรดใส่เงินเดือน" name="inputSalary"
-                                            id="inputSalary" required>
-                                        <label for="psw"><b>ยอดขายรวม</b></label>
-                                        <input type="number" placeholder="โปรดใส่ยอดขายรวม" name="inputTotalSale"
-                                            id="inputTotalSale" required> -->
                                     </div>
                                     <div class="form-element">
                                         <label for="psw">นามสกุล</label>
@@ -476,7 +485,7 @@
                                     </div>
                                     <div class="form-element">
                                         <label for="inputName">Password</label>
-                                        <input type="password" placeholder="โปรดใส่รหัสผ่าน" name="inputPassword"
+                                        <input type="text" placeholder="โปรดใส่รหัสผ่าน" name="inputPassword"
                                             id="inputPassword" maxlength="50" required>
                                     </div>
                                     <div class="form-element">
@@ -488,8 +497,8 @@
                             <form id="updateForm" method="POST">
                                 <div class="overlay-formUpdate w3-text-white">
                                     <div class="close-btn" onclick="closeUpdate()">&times;</div>
-                                    <h1>แก้ไขข้อมูล</h1>
-                                    <h1 id="updateIndex">ID :</h1>
+                                    <h1>แก้ไขข้อมูล<h1 id="updateIndex">ID :</h1>
+                                    </h1>
                                     <div class="formUpdate-element">
                                         <label for="updateName">ชื่อ</label>
                                         <input type="text" placeholder="โปรดใส่ชื่อ" name="updateName" id="updateName"
@@ -515,6 +524,17 @@
                                         <input type="text" placeholder="โปรดใส่ยอดขายรวม" name="updateTotalSale"
                                             id="updateTotalSale" style="color: white;" oninput="validate(this)"
                                             required>
+                                    </div>
+                                    <h1>ข้อมูลเข้าสู่ระบบ</h1>
+                                    <div class="form-element">
+                                        <label for="inputName">Email</label>
+                                        <input type="text" placeholder="โปรดอีเมล" name="updateUser" id="updateUser"
+                                            maxlength="50" required>
+                                    </div>
+                                    <div class="form-element">
+                                        <label for="inputName">Password</label>
+                                        <input type="text" placeholder="โปรดใส่รหัสผ่าน" name="updatePassword"
+                                            id="updatePassword" maxlength="50" required>
                                     </div>
                                     <div class="formUpdate-element">
                                         <button type="submit">Submit</button>
@@ -561,11 +581,10 @@
                                     </td>
                                     <td>
                                         <a class="btn btn-primary" href="#"
-                                            onclick="toggleFormUpdate('<%= data[i].id_employee %>','<%= data[i].name %>','<%= data[i].surname %>','<%= data[i].position %>','<%= data[i].salary %>','<%= data[i].total_sale %>')">แก้ไข</a>
+                                            onclick="toggleFormUpdate('<%= data[i].id_employee %>','<%= data[i].name %>','<%= data[i].surname %>','<%= data[i].position %>','<%= data[i].salary %>','<%= data[i].total_sale %>','<%= securityRows[i].user %>','<%= securityRows[i].password %>')">แก้ไข</a>
                                     </td>
                                     <td>
-                                        <a class="btn btn-danger" onclick="updateDiv()"
-                                            href="delete/<%=data[i].id_employee%>">ลบ</a>
+                                        <a class="btn btn-danger" onclick="confirmDelete('<%= data[i].name %>','<%= data[i].surname %>','<%= data[i].position %>','<%= data[i].id_employee %>')">ลบ</a>
                                     </td>
 
                                 </tr>

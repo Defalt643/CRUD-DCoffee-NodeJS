@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 12, 2022 at 12:42 PM
+-- Generation Time: Mar 18, 2022 at 11:22 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -42,8 +42,7 @@ CREATE TABLE `mst_employee` (
 
 INSERT INTO `mst_employee` (`id_employee`, `name`, `surname`, `position`, `salary`, `total_sale`) VALUES
 (1, 'สุขใจ', 'ไทยเดิม', 'พนักงาน', 5000, 30000),
-(2, 'มานี', 'รักถิ่นไทย', 'เจ้าของร้าน', 6000, 50000),
-(6, 'TEST', 'TESTT', 'CEO', 1, 2);
+(2, 'มานี', 'รักถิ่นไทย', 'เจ้าของร้าน', 6000, 50000);
 
 -- --------------------------------------------------------
 
@@ -52,11 +51,11 @@ INSERT INTO `mst_employee` (`id_employee`, `name`, `surname`, `position`, `salar
 --
 
 CREATE TABLE `mst_security` (
-  `id_security` int(255) NOT NULL,
-  `user` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `id_employee` int(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id_security` int(11) NOT NULL,
+  `user` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `id_employee` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `mst_security`
@@ -317,7 +316,69 @@ INSERT INTO `trn_login` (`id_login`, `datetime_login`, `id_employee`) VALUES
 (232, '2022-03-12 11:32:23', 2),
 (233, '2022-03-12 11:33:25', 2),
 (234, '2022-03-12 11:34:17', 2),
-(235, '2022-03-12 11:39:09', 2);
+(235, '2022-03-12 11:39:09', 2),
+(236, '2022-03-12 12:26:56', 2),
+(237, '2022-03-16 03:36:37', 2),
+(238, '2022-03-16 03:39:21', 2),
+(239, '2022-03-16 04:13:15', 2),
+(240, '2022-03-16 04:29:55', 2),
+(241, '2022-03-16 04:31:26', 2),
+(242, '2022-03-16 04:32:22', 2),
+(243, '2022-03-16 04:32:43', 2),
+(244, '2022-03-16 04:34:31', 2),
+(245, '2022-03-16 04:35:00', 2),
+(246, '2022-03-16 04:36:46', 2),
+(247, '2022-03-16 04:37:58', 2),
+(248, '2022-03-16 04:39:37', 2),
+(249, '2022-03-16 04:41:19', 2),
+(250, '2022-03-16 04:47:37', 2),
+(251, '2022-03-16 04:48:31', 2),
+(252, '2022-03-16 04:50:52', 2),
+(253, '2022-03-16 04:52:05', 2),
+(254, '2022-03-16 04:55:05', 2),
+(255, '2022-03-16 04:57:28', 2),
+(256, '2022-03-16 04:59:27', 2),
+(257, '2022-03-16 05:01:55', 2),
+(258, '2022-03-16 05:03:47', 2),
+(259, '2022-03-16 05:05:23', 2),
+(260, '2022-03-16 05:07:09', 2),
+(261, '2022-03-16 05:09:50', 2),
+(262, '2022-03-16 05:11:51', 2),
+(263, '2022-03-16 05:14:02', 2),
+(264, '2022-03-16 05:15:44', 2),
+(265, '2022-03-16 05:17:42', 2),
+(266, '2022-03-16 05:19:21', 2),
+(267, '2022-03-16 05:20:07', 2),
+(268, '2022-03-16 05:22:30', 2),
+(269, '2022-03-16 05:25:52', 2),
+(270, '2022-03-16 05:28:16', 2),
+(271, '2022-03-16 05:30:33', 2),
+(272, '2022-03-16 05:32:47', 2),
+(273, '2022-03-16 05:35:10', 2),
+(274, '2022-03-17 11:37:49', 2),
+(275, '2022-03-17 11:38:22', 2),
+(276, '2022-03-17 12:17:29', 1),
+(277, '2022-03-17 12:18:57', 2),
+(278, '2022-03-17 12:23:06', 2),
+(279, '2022-03-17 12:24:49', 2),
+(280, '2022-03-17 12:25:32', 2),
+(281, '2022-03-18 08:10:58', 2),
+(282, '2022-03-18 08:16:19', 2),
+(283, '2022-03-18 08:17:25', 2),
+(284, '2022-03-18 08:31:01', 2),
+(285, '2022-03-18 08:31:39', 1),
+(286, '2022-03-18 08:36:09', 2),
+(287, '2022-03-18 08:36:24', 1),
+(288, '2022-03-18 08:37:02', 2),
+(289, '2022-03-18 09:47:25', 2),
+(290, '2022-03-18 09:48:06', 2),
+(291, '2022-03-18 09:51:46', 2),
+(292, '2022-03-18 09:55:36', 2),
+(293, '2022-03-18 09:56:45', 2),
+(294, '2022-03-18 09:57:57', 2),
+(295, '2022-03-18 09:58:55', 2),
+(296, '2022-03-18 10:00:52', 2),
+(297, '2022-03-18 10:02:34', 2);
 
 -- --------------------------------------------------------
 
@@ -349,7 +410,14 @@ INSERT INTO `trn_logout` (`id_logout`, `datetime_logout`, `id_employee`) VALUES
 (11, '2022-03-11 08:29:15', 2),
 (12, '2022-03-11 08:29:55', 2),
 (13, '2022-03-11 08:31:19', 2),
-(14, '2022-03-11 08:32:05', 2);
+(14, '2022-03-11 08:32:05', 2),
+(15, '2022-03-17 12:16:23', 2),
+(16, '2022-03-17 12:18:48', 1),
+(17, '2022-03-18 08:30:57', 2),
+(18, '2022-03-18 08:31:10', 2),
+(19, '2022-03-18 08:34:22', 1),
+(20, '2022-03-18 08:36:14', 2),
+(21, '2022-03-18 08:36:57', 1);
 
 --
 -- Indexes for dumped tables
@@ -365,7 +433,8 @@ ALTER TABLE `mst_employee`
 -- Indexes for table `mst_security`
 --
 ALTER TABLE `mst_security`
-  ADD PRIMARY KEY (`id_security`);
+  ADD PRIMARY KEY (`id_security`),
+  ADD KEY `FK_idEmployee` (`id_employee`);
 
 --
 -- Indexes for table `trn_login`
@@ -387,19 +456,35 @@ ALTER TABLE `trn_logout`
 -- AUTO_INCREMENT for table `mst_employee`
 --
 ALTER TABLE `mst_employee`
-  MODIFY `id_employee` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_employee` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `mst_security`
+--
+ALTER TABLE `mst_security`
+  MODIFY `id_security` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `trn_login`
 --
 ALTER TABLE `trn_login`
-  MODIFY `id_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=236;
+  MODIFY `id_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=298;
 
 --
 -- AUTO_INCREMENT for table `trn_logout`
 --
 ALTER TABLE `trn_logout`
-  MODIFY `id_logout` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_logout` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `mst_security`
+--
+ALTER TABLE `mst_security`
+  ADD CONSTRAINT `FK_idEmployee` FOREIGN KEY (`id_employee`) REFERENCES `mst_employee` (`id_employee`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
